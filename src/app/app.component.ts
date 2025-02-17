@@ -22,8 +22,9 @@ import { ILog } from './types/log';
 import { SecToStrPipe } from './pipes/sec-to-str.pipe';
 import { SecToTimePipe } from './pipes/sec-to-time.pipe';
 import { CardModule } from 'primeng/card';
-import {FluidModule} from 'primeng/fluid';
-import {EntryDurationPipe} from './pipes/entry-duration.pipe';
+import { FluidModule } from 'primeng/fluid';
+import { EntryDurationPipe } from './pipes/entry-duration.pipe';
+import { DayProgressComponent } from './components/day-progress/day-progress.component';
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,7 @@ import {EntryDurationPipe} from './pipes/entry-duration.pipe';
     SecToStrPipe,
     SecToTimePipe,
     EntryDurationPipe,
+    DayProgressComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -60,10 +62,18 @@ export class AppComponent implements OnInit, OnDestroy {
   selectedActivity = '';
   selectedEntry: ILog;
   activityOptions = [
-    'Отсутствие на рабочем месте',
-    'Перерыв',
-    'Отчёт',
-    'Основная трудовой деятельности',
+    '[ПЗ] Подготовительно заключительное',
+    '[Оп] Оперативное',
+    '[О] Основное',
+    '[В] Вспомогательное',
+    '[ОБС] Время на обслуживание рабочего места',
+    '[ОТД] Перерывы на отдых',
+    '[Л.Н] Перерывы на личные надобности',
+    '[ОТЛ] Перерывы на отдых и личные надобности',
+    '[ПН] Перерывы из-за нарушений трудовой деятельности',
+    '[ПО] Перерывы по организационно- техническим причинам',
+    '[Пон] В т.ч. из за организационных неполадок',
+    '[Поо] Обусловленные особенностями технологии и организации производства',
   ];
   activityCmItems = [
     {
@@ -92,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.log = [
       {
         date: new Date(),
-        activity: 'Отсутствие на рабочем месте',
+        activity: '[ОБС] Время на обслуживание рабочего места',
         from: new Date(morning),
         to: new Date(new Date().getTime() - 20 * 60000),
       },
