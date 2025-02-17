@@ -21,6 +21,9 @@ import { interval, Observable, Observer, Subject, Subscription } from 'rxjs';
 import { ILog } from './types/log';
 import { SecToStrPipe } from './pipes/sec-to-str.pipe';
 import { SecToTimePipe } from './pipes/sec-to-time.pipe';
+import { CardModule } from 'primeng/card';
+import {FluidModule} from 'primeng/fluid';
+import {EntryDurationPipe} from './pipes/entry-duration.pipe';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +31,8 @@ import { SecToTimePipe } from './pipes/sec-to-time.pipe';
     FormsModule,
     AutoComplete,
     FieldsetModule,
+    CardModule,
+    FluidModule,
     TableModule,
     ButtonModule,
     ContextMenuModule,
@@ -36,6 +41,7 @@ import { SecToTimePipe } from './pipes/sec-to-time.pipe';
     DatePipe,
     SecToStrPipe,
     SecToTimePipe,
+    EntryDurationPipe,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -129,9 +135,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   timeUpdateTick() {
     this.to = new Date();
-    this.cdr.detectChanges();
     this.passedTimeSec =
       Math.abs(this.from.getTime() - this.to.getTime()) / 1000;
+    this.cdr.detectChanges();
   }
   updateTimeValue() {
     if (!this.autocompleteItems) {
@@ -139,6 +145,7 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
     this.from = new Date(this.log[this.log.length - 1]?.to);
+    this.cdr.detectChanges();
   }
   updateActivityOptions(activity: string) {
     if (!this.activityOptions.includes(activity)) {

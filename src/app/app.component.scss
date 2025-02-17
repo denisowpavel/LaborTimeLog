@@ -1,0 +1,20 @@
+:host {
+  .time-card {
+    ::ng-deep .p-card-body {
+      border: 1px solid var(--p-fieldset-border-color);
+      border-radius: var(--p-fieldset-border-radius);
+      background-color: var(--p-fieldset-background);
+    }
+    &.valid {
+      ::ng-deep .p-card-body {
+        border-color: var(--p-button-primary-background);
+        background-color: var(--p-highlight-background);
+      }
+    }
+  }
+  .passed-time {
+    font-size: 50px;
+    font-weight: 100;
+    padding: 15px 0;
+  }
+}
