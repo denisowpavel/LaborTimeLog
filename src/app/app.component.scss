@@ -17,4 +17,18 @@
     font-weight: 100;
     padding: 15px 0;
   }
+  .time-log{
+    &.gray {
+        background-color: var(--p-slate-200);
+      }
+      &.green {
+        background-color: var(--p-emerald-500);
+      }
+      &.yellow {
+        background-color: var(--p-yellow-500);
+      }
+      &.red {
+        background-color: var(--p-red-500);
+      }
+  }
 }

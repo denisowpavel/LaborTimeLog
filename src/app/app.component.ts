@@ -12,7 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
-import { DatePipe } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { ListboxDoubleClickEvent, ListboxModule } from 'primeng/listbox';
 import { FieldsetModule } from 'primeng/fieldset';
@@ -25,6 +25,7 @@ import { CardModule } from 'primeng/card';
 import { FluidModule } from 'primeng/fluid';
 import { EntryDurationPipe } from './pipes/entry-duration.pipe';
 import { DayProgressComponent } from './components/day-progress/day-progress.component';
+import { UtilityService } from './services/utility.service';
 
 @Component({
   selector: 'app-root',
@@ -40,10 +41,10 @@ import { DayProgressComponent } from './components/day-progress/day-progress.com
     ListboxModule,
     DatePickerModule,
     DatePipe,
-    SecToStrPipe,
     SecToTimePipe,
     EntryDurationPipe,
     DayProgressComponent,
+    CommonModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -51,7 +52,10 @@ import { DayProgressComponent } from './components/day-progress/day-progress.com
   standalone: true,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public utilityService: UtilityService,
+  ) {}
   @ViewChild('activityCm') activityCm: ContextMenu;
   @ViewChild('logCm') logCm: ContextMenu;
   autocompleteItems: string[] = [];
@@ -97,8 +101,7 @@ export class AppComponent implements OnInit, OnDestroy {
   $currentTimeUpdateTick: Subscription;
   passedTimeSec = 0;
   ngOnInit() {
-    const morning = new Date();
-    morning.setHours(8, 0, 0, 0);
+    const morning = this.utilityService.morning
     this.log = [
       {
         date: new Date(),
@@ -109,6 +112,7 @@ export class AppComponent implements OnInit, OnDestroy {
     ];
     this.updateTimeValue();
     this.timeUpdateTick();
+    this.updateSlotsMaps();
     this.$currentTimeUpdateTick = interval(1000).subscribe(
       this.timeUpdateTick.bind(this),
     );
@@ -141,6 +145,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.updateActivityOptions(activity);
     this.updateTimeValue();
     this.timeUpdateTick();
+    this.updateSlotsMaps();
     this.cdr.detectChanges();
   }
   timeUpdateTick() {
@@ -156,6 +161,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     this.from = new Date(this.log[this.log.length - 1]?.to);
     this.cdr.detectChanges();
+  }
+  updateSlotsMaps() {
+    this.utilityService.setSlotsMap(this.log)
   }
   updateActivityOptions(activity: string) {
     if (!this.activityOptions.includes(activity)) {
@@ -173,6 +181,7 @@ export class AppComponent implements OnInit, OnDestroy {
   cleanLogEntry() {
     this.log = this.log.filter((a) => a !== this.selectedEntry);
     this.updateTimeValue();
+    this.updateSlotsMaps();
     this.cdr.detectChanges();
   }
 

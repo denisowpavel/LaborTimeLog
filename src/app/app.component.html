@@ -67,12 +67,14 @@
       <tr (contextmenu)="onLogContextMenu($event, entry)">
         <td>{{ entry.date | date: "dd.MM.YYYY" }}</td>
         <td>{{ entry.activity }}</td>
-        <td>{{ entry | entryDuration | secToTime }}</td>
+        <td class="time-log" [ngClass]="utilityService.getColor(entry)">{{ entry | entryDuration | secToTime }}</td>
         <td>{{ entry.from | date: "HH:mm" }}</td>
         <td>{{ entry.to | date: "HH:mm" }}</td>
       </tr>
     </ng-template>
   </p-table>
 </div>
+<br>
+<app-day-progress></app-day-progress>
 <p-contextmenu #activityCm [model]="activityCmItems" />
 <p-contextmenu #logCm [model]="logCmItems" />
